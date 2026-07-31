@@ -1,25 +1,51 @@
 # o-yutaka — AI Agent & Automation Engineer
 
-I build the control layer around AI models: **agent runtimes, permissioned tool use, provider routing, human approval, durable decision traces, evaluation, and operations dashboards**.
-
-My portfolio is organized around one principle:
+I build the control layer around AI models: **agent runtimes, permissioned tool use, OpenAI-compatible providers, human approval, durable decision traces, evaluation, and operations dashboards**.
 
 > A useful AI system must show what it decided, why it decided it, what it was allowed to do, and how the result can be reproduced.
 
-## Start here
+## Featured portfolio
 
-| Target role | Best repository | What to review first |
+| Project | Working evidence | Review |
 |---|---|---|
-| AI Agent platform / LLM infrastructure | [BLACK](https://github.com/o-yutaka/BLACK) | Architecture, provider routing, decision ledger, replay, verification gates |
-| Python + FastAPI + Next.js AI application | [AI-AI](https://github.com/o-yutaka/AI-AI) | Contract enforcement, approval flow, SQLite durability, API tests, Docker Compose |
-| Planning / simulation / strict external APIs | [black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship) | Legal-action runtime, deterministic fallback, submission gates, evaluation harness |
-| Python autonomous-runtime experiments | [black-core](https://github.com/o-yutaka/black-core) | Event bus, task execution, semantic memory, timeout and subprocess isolation |
+| **AI Agent Control Plane** | Live interactive approval flow, FastAPI, Next.js, OpenAI-compatible planner, allow-listed HTTP tools, SQLite durability | **[Open live demo](https://o-yutaka.github.io/AI-AI/)** · [Repository](https://github.com/o-yutaka/AI-AI) |
+| **BLACK** | Decision and trust platform with provider routing, policy gates, evidence, replay, CLI, and operations UI | [Repository](https://github.com/o-yutaka/BLACK) |
+| **BLACK Pokémon Championship Agent** | Strict external-action contracts, deterministic fallback, planning, evaluation, and submission verification | [Repository](https://github.com/o-yutaka/black-pokemon-championship) |
 
 Detailed claim boundaries and review paths: [`PROJECT_EVIDENCE.md`](PROJECT_EVIDENCE.md)
 
-## Primary engineering work
+## AI Agent Control Plane — fastest review
 
-### BLACK — Decision & Trust Operating System
+```text
+OpenAI-compatible provider → candidate actions
+                           → contract / permission / evidence checks
+                           → deterministic selection
+                           → human approval
+                           → allow-listed tool adapter
+                           → audit trace → SQLite
+```
+
+Implemented evidence:
+
+- public interactive browser demo requiring no secret and creating no external side effect
+- Python, FastAPI, Pydantic, TypeScript, Next.js, and React
+- OpenAI-compatible `/chat/completions` candidate planner
+- provider output validated as typed action candidates
+- rejection of undeclared provider tool operations
+- fixed-host, fixed-method, fixed-path HTTP JSON adapters
+- environment-only secret resolution, disabled redirects, timeout, and response-size bounds
+- versioned allowed-action contracts and per-action permissions
+- deterministic ranking and exact rejection reasons
+- high-impact approval and rejection flow
+- idempotency conflict detection
+- durable SQLite runs and approval continuation after restart
+- Python 3.11/3.12, Ruff, static export, and Docker builds in GitHub Actions
+
+Live demo: https://o-yutaka.github.io/AI-AI/
+
+Repository: https://github.com/o-yutaka/AI-AI
+
+## BLACK — Decision & Trust Operating System
 
 A full-stack decision layer above interchangeable AI models and tools.
 
@@ -32,43 +58,20 @@ Implemented evidence includes:
 
 - TypeScript monorepo with CLI and Next.js operations UI
 - OpenAI-compatible, Ollama, and deterministic provider adapters
-- Capability routing with success, latency, and cost telemetry
-- Permission and policy gates for external actions
+- capability routing with success, latency, and cost telemetry
+- permission and policy gates for external actions
 - SQLite source of truth plus append-only JSONL mirror
 - deterministic Decision DNA fingerprints and replay verification
 - plugin SDK, provider SDK, schema generation, secret redaction, and core-freeze governance
-- 140+ unit/integration tests, 53 Playwright E2E tests, and documented verification evidence
+- unit/integration tests, Playwright E2E tests, and documented verification evidence
 
-Repository: [github.com/o-yutaka/BLACK](https://github.com/o-yutaka/BLACK)
+Repository: https://github.com/o-yutaka/BLACK
 
-### AI Agent Control Plane
-
-A smaller public system that can be reviewed and run quickly.
-
-```text
-Next.js dashboard → FastAPI → Agent Runtime
-                 → Contract / Permission / Evidence checks
-                 → Human approval → Executor → Audit trace → SQLite
-```
-
-Implemented evidence includes:
-
-- Python, FastAPI, Pydantic
-- TypeScript, Next.js App Router, React
-- versioned allowed-action contracts
-- deterministic candidate ranking and exact rejection reasons
-- high-impact approval and rejection flow
-- idempotency conflict detection
-- durable SQLite runs and approval continuation after restart
-- Docker Compose named volume and GitHub Actions matrix
-
-Repository: [github.com/o-yutaka/AI-AI](https://github.com/o-yutaka/AI-AI)
-
-### BLACK Pokémon Championship Agent
+## BLACK Pokémon Championship Agent
 
 A reliability case study for a stateful agent connected to a strict external simulation engine.
 
-The value is not the game domain itself. The engineering transfer is:
+The transferable engineering is:
 
 - execute only actions currently exposed by the external system
 - preserve option-index semantics without guessing
@@ -78,7 +81,7 @@ The value is not the game domain itself. The engineering transfer is:
 - separate fast screening evidence from promotion claims
 - keep decision overlays and truth-ledger diagnostics
 
-Repository: [github.com/o-yutaka/black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship)
+Repository: https://github.com/o-yutaka/black-pokemon-championship
 
 ## Skills demonstrated
 
@@ -87,7 +90,7 @@ AI Agent Runtime       LLM / Provider Routing      Human-in-the-loop
 Python / FastAPI       TypeScript / Next.js        Pydantic / Zod
 Tool Calling           Audit / Decision Traces     Evaluation Harnesses
 Docker / CI            SQLite / Event Ledgers      External API Contracts
-Policy Gates           Retry / Failure Design      Local and Cloud Models
+Policy Gates           Failure Design              Local and Cloud Models
 ```
 
 ## How I work
@@ -99,17 +102,9 @@ Policy Gates           Retry / Failure Design      Local and Cloud Models
 - Preserve explicit failure states instead of hiding them behind fallback output.
 - Prefer reversible changes, stable interfaces, and documented non-goals.
 
-## Current focus
-
-- AI automation and business-process improvement
-- reliable multi-step agents
-- OpenAI-compatible provider abstraction
-- approval-aware external actions
-- evaluation, observability, and replay
-- full-stack AI operations interfaces
-
 ## Review order
 
-1. Open [AI-AI](https://github.com/o-yutaka/AI-AI) for the fastest runnable full-stack review.
-2. Open [BLACK](https://github.com/o-yutaka/BLACK) for the larger platform architecture and evidence trail.
-3. Open [black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship) for strict runtime and evaluation engineering.
+1. Open the [AI-AI live demo](https://o-yutaka.github.io/AI-AI/) for the fastest product review.
+2. Open [AI-AI](https://github.com/o-yutaka/AI-AI) for the implementation and test evidence.
+3. Open [BLACK](https://github.com/o-yutaka/BLACK) for the larger platform architecture.
+4. Open [black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship) for strict runtime and evaluation engineering.
