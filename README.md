@@ -8,7 +8,7 @@ I build the control layer around AI models: **agent runtimes, permissioned tool 
 
 | Project | Working evidence | Review |
 |---|---|---|
-| **AI Agent Control Plane** | Live interactive approval flow, FastAPI, Next.js, OpenAI-compatible planner, allow-listed HTTP tools, SQLite durability | **[Open live demo](https://o-yutaka.github.io/AI-AI/)** · [Repository](https://github.com/o-yutaka/AI-AI) |
+| **AI Agent Control Plane** | Live interactive approval flow, FastAPI, Next.js, OpenAI-compatible planner, allow-listed HTTP tools, SQLite durability | **[Open live demo](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html)** · [Repository](https://github.com/o-yutaka/AI-AI) |
 | **BLACK** | Decision and trust platform with provider routing, policy gates, evidence, replay, CLI, and operations UI | [Repository](https://github.com/o-yutaka/BLACK) |
 | **BLACK Pokémon Championship Agent** | Strict external-action contracts, deterministic fallback, planning, evaluation, and submission verification | [Repository](https://github.com/o-yutaka/black-pokemon-championship) |
 
@@ -41,7 +41,9 @@ Implemented evidence:
 - durable SQLite runs and approval continuation after restart
 - Python 3.11/3.12, Ruff, static export, and Docker builds in GitHub Actions
 
-Live demo: https://o-yutaka.github.io/AI-AI/
+Live demo: https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html
+
+Clean GitHub Pages URL prepared: https://o-yutaka.github.io/AI-AI/
 
 Repository: https://github.com/o-yutaka/AI-AI
 
@@ -104,7 +106,7 @@ Policy Gates           Failure Design              Local and Cloud Models
 
 ## Review order
 
-1. Open the [AI-AI live demo](https://o-yutaka.github.io/AI-AI/) for the fastest product review.
+1. Open the [AI-AI live demo](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html) for the fastest product review.
 2. Open [AI-AI](https://github.com/o-yutaka/AI-AI) for the implementation and test evidence.
 3. Open [BLACK](https://github.com/o-yutaka/BLACK) for the larger platform architecture.
 4. Open [black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship) for strict runtime and evaluation engineering.
