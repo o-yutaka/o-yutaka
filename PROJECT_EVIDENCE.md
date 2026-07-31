@@ -16,71 +16,144 @@ A project is portfolio-ready only when a reviewer can follow that chain.
 
 Repository: <https://github.com/o-yutaka/AI-AI>
 
-Verified public mirror: <https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html>
+Interactive public proof: <https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html>
+
+Browser proof manifest: <https://github.com/o-yutaka/AI-AI/blob/main/docs/assets/proof/visual-proof-manifest.json>
 
 Deployment evidence: <https://github.com/o-yutaka/AI-AI/blob/main/docs/live-status.json>
 
 ### Problem addressed
 
-A business agent should not call any tool it can describe. It should execute only actions currently allowed by the external system, require permissions and evidence, pause high-impact operations for human approval, prevent duplicate side effects, and preserve the decision trace.
+A business agent should not call any tool it can describe. It should execute only actions currently allowed by the external system, require permissions and evidence, prevent detected sensitive values from crossing unsafe boundaries, pause high-impact operations for human approval, prevent duplicate side effects, and preserve a reproducible decision trace.
 
 ### Implemented system
+
+#### Runtime and state
 
 - FastAPI and Pydantic API boundary
 - versioned action contract
 - permission and evidence checks
-- deterministic runtime ranking and rejection reasons
+- sensitive action-payload rejection
+- exact tool and operation capability gate
+- deterministic ranking and rejection reasons
+- canonical SHA-256 observation and request fingerprints independent of run ID
 - named approval and rejection flow
-- idempotency and conflicting-request detection
-- structured executor failures
-- restart-safe SQLite persistence
+- explicit execution-attempt count
+- stable idempotency replay and conflicting-request detection
+- structured provider and executor failures
+- SQLite WAL, busy timeout, unique idempotency key, and restart-safe traces
 - Next.js operations dashboard
+
+#### Provider and tool boundary
+
 - OpenAI-compatible `/chat/completions` candidate planner
+- goal and observation redaction before provider transmission
 - typed validation of provider-generated candidates
 - rejection of undeclared provider tool operations
+- provider response limit enforced while streaming
 - operator-configured HTTP tool registry
-- exact tool and operation lookup
-- fixed host, method, and path templates
+- exact fixed host, method, relative path template, and operation
 - disabled redirects and request timeouts
-- environment-only adapter secrets
-- Docker Compose persistent volume
-- GitHub Actions for Python, Ruff, frontend build, static export, and Docker images
-- self-contained public browser demonstration with external connections disabled by CSP
+- HTTP response limit enforced while streaming
+- sensitive HTTP headers restricted to environment-variable references
+- nested sensitive response-field redaction
+
+#### Privacy boundary
+
+- default sensitive-key detection for authorization, cookies, passwords, secrets, tokens, API keys, email, phone, and address variants
+- configurable domain-specific sensitive keys
+- nested mapping/list redaction
+- free-text bearer, credential-assignment, email, and phone redaction
+- redaction before provider transmission, persistence, API return, approval recording, audit events, and error recording
+- detected sensitive action payloads blocked rather than rewritten and executed
+
+#### Reproducible delivery
+
+- committed Python development lock
+- committed Python runtime lock
+- committed npm lockfile
+- Python 3.11 and 3.12 CI
+- Ruff and 64 tests
+- Next.js static export
+- backend and frontend Docker builds
+- non-root containers
+- read-only filesystems and `no-new-privileges`
+- API and web health checks
+- Docker Compose real-start smoke
+- Chromium interaction verification
+- committed desktop, mobile, blocked, approval, idempotency, and GIF proof
+- MIT license, security policy, changelog, ADRs, and dependency monitoring
+
+### Browser-verified proof
+
+```json
+{
+  "different_run_ids_same_input": true,
+  "duplicate_execution_count": 1,
+  "blocked_execution_count": 0,
+  "conflict_execution_count": 0,
+  "approved_execution_count": 1
+}
+```
+
+Committed visual evidence:
+
+- 1440 px waiting-approval screen
+- 1440 px approved screen
+- 1440 px blocked-candidates screen
+- 1440 px idempotency-replay screen
+- 390 px mobile waiting-approval screen
+- compact proof GIF
 
 ### Reproducible review path
 
-1. public interactive mirror
+1. public interactive proof
 2. `README.md`
-3. `control_plane/runtime.py`
-4. `control_plane/providers.py`
-5. `control_plane/tools.py`
-6. `control_plane/store.py`
-7. `tests/test_runtime.py`
-8. `tests/test_persistence.py`
-9. `tests/test_providers.py`
-10. `tests/test_tools.py`
-11. `docs/adr/0001-durable-run-store.md`
-12. `docs/adr/0002-provider-tool-boundary.md`
-13. `docs/portfolio-audit-2026-08-01.md`
+3. `docs/assets/proof/visual-proof-manifest.json`
+4. `control_plane/runtime.py`
+5. `control_plane/security.py`
+6. `control_plane/providers.py`
+7. `control_plane/tools.py`
+8. `control_plane/store.py`
+9. `tests/test_runtime.py`
+10. `tests/test_security.py`
+11. `tests/test_hardening.py`
+12. `tests/test_trace_execution_proof.py`
+13. `tests/test_provider_privacy.py`
+14. `tests/test_tools.py`
+15. `scripts/capture_visual_proof.py`
+16. `docs/adr/0003-data-boundary-and-streaming-limits.md`
+17. `docs/evidence.md`
+18. `docs/portfolio-audit-2026-08-01.md`
 
 Primary commands:
 
 ```bash
 docker compose up --build
-pytest -q
+
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.lock.txt
+pip install --no-deps -e .
 ruff check .
+pytest -q
+
+cd web
+npm ci
+npm run build
 ```
 
-### Current public-proof boundary
+### Public-proof boundary
 
-- The RawGitHack mirror is independently verified as HTTP 200 in `docs/live-status.json`.
-- The clean GitHub Pages URL is prepared but must not be described as live until repository-level Pages is enabled and the evidence file records successful build, deployment, and HTTP verification.
-- The browser demo simulates provider and executor behavior locally; the real OpenAI-compatible provider and HTTP adapters are backend implementations.
-- The current screenshot is existence evidence, not readable trace evidence; the repository audit requires a higher-resolution desktop and mobile replacement.
+- The browser page executes the contract, policy, approval, blocking, idempotency, fingerprint, and trace lifecycle locally.
+- Browser provider generation and tool execution are explicitly simulated.
+- Content Security Policy disables browser network connections.
+- Real OpenAI-compatible provider and HTTP adapter requests are backend implementations tested through controlled HTTP transports.
+- The clean GitHub Pages URL is prepared but must not be described as live until repository-level Pages is enabled and HTTP verification succeeds.
 
 ### Explicit non-claims
 
-This is a durable single-node reference system. It does not claim production authentication, tenant isolation, enterprise RBAC, PostgreSQL, durable distributed queues, production traffic, load-test evidence, production SLOs, or compliance certification.
+This is a durable single-node reference system. It does not claim production authentication, tenant isolation, enterprise RBAC, distributed queues, multi-region replication, production customer traffic, load-test evidence, production SLOs, complete DLP, compliance certification, or audited security.
 
 ---
 
@@ -200,4 +273,4 @@ The following are GitHub account or repository settings and cannot be proven by 
 
 1. GitHub Pages enabled with GitHub Actions as the source
 2. actual profile pins set to `AI-AI`, `BLACK`, and `black-pokemon-championship`
-3. obsolete public repositories archived or made private after unique work is preserved
+3. obsolete public repositories archived or made private only after unique work is preserved
