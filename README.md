@@ -1,143 +1,174 @@
-# o-yutaka — AI Agent & Automation Engineer
+# o-yutaka — AI Agent / Automation / Platform Engineer
 
-I build the control layer around AI models: **agent runtimes, permissioned tool use, OpenAI-compatible providers, human approval, deterministic decision traces, evaluation, and operations dashboards**.
+I build the engineering layer around AI models: **agent runtimes, business automation, permissioned tool use, provider routing, human approval, evaluation, external API integration, reproducible execution, and terminal-first operations**.
 
 > A useful AI system must show what it decided, why it decided it, what it was allowed to do, whether it executed, and how the result can be reproduced.
 
-## Featured portfolio
+## Portfolio architecture
 
-| Project | Working evidence | Review |
+These repositories are presented as one engineering system, not as unrelated demos.
+
+```text
+                         BLACK
+                Decision / Trust Platform
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+     AI-AI              popopo            Pokémon
+ Business Agent       AI Product        Planning / Eval
+ Control Plane        + API Policy       + Simulation
+        │                  │                  │
+        └──────────────┬───┴──────────────────┘
+                       │
+                 black-core
+               Python Agent Runtime
+                       │
+              Agent Operations
+             openclaw-bot-review*
+```
+
+`*` Fork/adaptation lineage is disclosed in that repository and is not presented as an original upstream project.
+
+## Featured portfolio — every entry has a job
+
+| Project | What it proves | Best-fit roles |
 |---|---|---|
-| **AI Agent Control Plane** | Browser-operated approval, blocking, idempotency, deterministic fingerprints, FastAPI, Next.js, real provider/tool boundaries, SQLite durability | **[Open live proof](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html)** · [Repository](https://github.com/o-yutaka/AI-AI) |
-| **BLACK** | Decision and trust platform with provider routing, policy gates, evidence, replay, CLI, and operations UI | [Repository](https://github.com/o-yutaka/BLACK) |
-| **BLACK Pokémon Championship Agent** | Strict external-action contracts, deterministic fallback, planning, evaluation, and submission verification | [Repository](https://github.com/o-yutaka/black-pokemon-championship) |
+| **[BLACK](https://github.com/o-yutaka/BLACK)** | Decision platform, LLM/provider routing, plugins, evidence, replay, CLI, web operations | AI Platform / Agent / LLM / TypeScript |
+| **[AI-AI](https://github.com/o-yutaka/AI-AI)** | Business AI Agent control plane, FastAPI, Next.js, approval, tool boundaries, idempotency, audit | AI Automation / Python / FastAPI / Agent |
+| **[popopo](https://github.com/o-yutaka/popopo)** | AI product integration, FastAPI, OAuth2, external APIs, policy, privacy, live evidence | AI Product / API Integration / Full-stack |
+| **[BLACK Pokémon Championship](https://github.com/o-yutaka/black-pokemon-championship)** | Stateful planning, strict external action contracts, simulation, fallback, evaluation, reproducible artifacts | Agent Planning / Evaluation / Reliability |
+| **[black-core](https://github.com/o-yutaka/black-core)** | Python-first runtime, event bus, agent loop, executor, memory, controlled code execution | Python / Agent Runtime |
+| **[openclaw-bot-review](https://github.com/o-yutaka/openclaw-bot-review)** | Agent operations dashboard, sessions, models, tokens, health, skills, channels | Agent Operations / Next.js / TypeScript |
 
-Detailed claim boundaries and review paths: [`PROJECT_EVIDENCE.md`](PROJECT_EVIDENCE.md)
-
-## AI Agent Control Plane — fastest review
-
-[![AI Agent Control Plane proof](https://raw.githubusercontent.com/o-yutaka/AI-AI/main/docs/assets/proof/ai-agent-control-plane-proof.gif)](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html)
-
-```text
-OpenAI-compatible provider → untrusted candidate actions
-                           → contract / permission / evidence checks
-                           → sensitive-data and exact-tool gates
-                           → deterministic ranking
-                           → human approval
-                           → fixed HTTP tool adapter
-                           → redacted result / error
-                           → audit trace + SQLite + idempotency
-```
-
-### Browser-verified proof
-
-```json
-{
-  "different_run_ids_same_input": true,
-  "duplicate_execution_count": 1,
-  "blocked_execution_count": 0,
-  "conflict_execution_count": 0,
-  "approved_execution_count": 1
-}
-```
-
-The Chromium workflow operates the public demo and verifies:
-
-- same canonical input produces the same SHA-256 request fingerprint even with different run IDs
-- duplicate idempotency replay returns the existing run without a second execution
-- conflicting input under the same key is rejected
-- contract, permission, evidence, and unregistered-tool violations are blocked with execution count `0`
-- a high-impact action remains at execution count `0` before approval and becomes `1` after approval
-- committed 1440 px desktop proof, 390 px mobile proof, and a short GIF
-
-### Backend implementation
-
-- Python, FastAPI, Pydantic, TypeScript, Next.js, and React
-- OpenAI-compatible `/chat/completions` candidate planner
-- provider observations redacted before transmission
-- typed provider output and undeclared tool-operation rejection
-- fixed-host, fixed-method, fixed-path HTTP adapters
-- sensitive adapter headers restricted to environment-variable references
-- response limits enforced while streaming, disabled redirects, and timeouts
-- recursive secret/PII redaction before persistence, API return, approvals, audit events, and errors
-- versioned action contracts, permissions, evidence requirements, deterministic ranking, and exact rejection reasons
-- named approval and rejection flow
-- explicit execution count, idempotent replay, and conflict detection
-- SQLite WAL, busy timeout, unique idempotency keys, and restart-safe approvals
-- committed Python runtime/development locks and npm lockfile
-- non-root, read-only Docker Compose stack with health-gated startup
-
-### Verified engineering gates
-
-```text
-Python 3.11 / 3.12     Ruff + 64 tests PASS
-Next.js                npm lock + static export PASS
-Dependency locks       runtime / dev / frontend PASS
-Browser proof          Chromium interaction contract PASS
-Docker                 API + web image builds PASS
-Compose                real startup + both health checks PASS
-```
-
-Live proof: <https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html>
-
-Evidence manifest: <https://github.com/o-yutaka/AI-AI/blob/main/docs/assets/proof/visual-proof-manifest.json>
-
-Repository: <https://github.com/o-yutaka/AI-AI>
-
-The clean GitHub Pages URL is prepared at `https://o-yutaka.github.io/AI-AI/`, but it is not represented as live until repository-level Pages is enabled and HTTP verification succeeds.
-
-## BLACK — Decision & Trust Operating System
-
-A full-stack decision layer above interchangeable AI models and tools.
+## 1. BLACK — Decision & Trust Operating System
 
 ```text
 Mission → Context → Candidate Arena → Evaluation → Capability Router
         → Plugin Runtime → Evidence → Verification → Decision Ledger → Replay
 ```
 
-Implemented evidence includes:
+Evidence includes provider routing, plugin/provider SDKs, deterministic Decision DNA, replay verification, SQLite + JSONL ledgering, secret redaction, CLI, Next.js operations UI, 140+ unit/integration tests, 53 Playwright E2E checks, Storybook, and CI verification.
 
-- TypeScript monorepo with CLI and Next.js operations UI
-- OpenAI-compatible, Ollama, and deterministic provider adapters
-- capability routing with success, latency, and cost telemetry
-- permission and policy gates for external actions
-- SQLite source of truth plus append-only JSONL mirror
-- deterministic Decision DNA fingerprints and replay verification
-- plugin SDK, provider SDK, schema generation, secret redaction, and core-freeze governance
-- 140+ unit/integration tests, 53 Playwright E2E checks, Storybook, and documented verification evidence
+**Recruiter path:** `README.md` → `ARCHITECTURE.md` → `packages/runtime` → `packages/core` → `docs/evidence/`.
 
-Repository: <https://github.com/o-yutaka/BLACK>
+## 2. AI-AI — Business AI Agent Control Plane
 
-## BLACK Pokémon Championship Agent
-
-A reliability case study for a stateful agent connected to a strict external simulation engine.
-
-Transferable engineering:
-
-- execute only actions currently exposed by the external system
-- preserve option-index semantics without guessing
-- reject invalid selections before execution
-- enforce deterministic fallback under timeout or policy failure
-- validate exact submission layout and dependencies
-- separate crash screening from promotion claims
-- preserve decision overlays and truth-ledger diagnostics
-
-Repository: <https://github.com/o-yutaka/black-pokemon-championship>
-
-## Skills demonstrated
+A runnable full-stack reference for contract-aware, auditable, human-approved AI agents.
 
 ```text
-AI Agent Runtime       LLM / Provider Routing      Human-in-the-loop
+OpenAI-compatible planner
+        ↓
+Contract / Permission / Evidence / Privacy gates
+        ↓
+Deterministic ranking
+        ↓
+Human approval when required
+        ↓
+Fixed tool adapter
+        ↓
+Audit / SQLite / Idempotent replay
+```
+
+Verified browser proof covers duplicate prevention, conflict rejection, blocked actions, approval gating, desktop/mobile evidence, FastAPI, Next.js, Docker, and CI.
+
+**Live proof:** https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html
+
+## 3. popopo — Production-oriented AI Product Integration
+
+A working AI product prototype demonstrating:
+
+- FastAPI + strict Pydantic contracts
+- OAuth2 client credentials
+- External API adapters
+- Consent / crisis / privacy / cooldown policy
+- Allowlisted retrieval
+- Deterministic credential-free fallback
+- Redacted live API evidence
+- Automated API/media/submission tests
+- GitHub Actions + Docker
+
+The transferable pattern is:
+
+```text
+Event → Policy → Model → Allowlist → External API → Delivery Policy → Evidence
+```
+
+**Public demo:** https://o-yutaka.github.io/popopo/
+
+## 4. BLACK Pokémon Championship — Stateful Agent Reliability
+
+A stateful agent connected to a strict external simulation engine.
+
+It proves:
+
+- execute only currently exposed actions
+- preserve option-index semantics
+- reject invalid selections before execution
+- deterministic fallback under timeout/error
+- exact submission artifact verification
+- regression/crash/speed screening
+- honest separation of local screening and official evaluation
+
+This is the planning/evaluation proof behind the business-agent work rather than a claim that the domain heuristic is universal.
+
+## 5. black-core — Python Agent Runtime
+
+Python-first runtime covering Event Bus, Task Intelligence, Goal Generation, Agent System, Executor/Code Runner, Autonomous Loop, and FAISS semantic memory.
+
+The repository is being hardened toward the same portfolio gates used by the other projects: typed contracts, deterministic tests, CI, dependency locking, benchmarks, and explicit execution-policy verification.
+
+## 6. openclaw-bot-review — Agent Operations
+
+A dashboard-oriented engineering study around agent operations: model management, sessions, token usage, gateway health, skills, channels, alerts, and scheduling.
+
+**Lineage is disclosed in the repository.** It is shown as architecture/operations experience, not as an original upstream implementation claim.
+
+## Skill matrix
+
+```text
+AI Agent Runtime       LLM / Provider Routing      AI Automation
 Python / FastAPI       TypeScript / Next.js        Pydantic / Zod
-Tool Calling           Audit / Decision Traces     Evaluation Harnesses
-Docker / CI            SQLite / Event Ledgers      External API Contracts
-Policy Gates           Privacy Boundaries          Failure Design
+Tool Calling           Human-in-the-loop           Audit / Decision Trace
+Evaluation Harness     Simulation / Planning       External API Contracts
+OAuth2 / Policy        Docker / CI                 SQLite / Ledgers
+Failure Recovery       Privacy Boundaries           Terminal-first Operations
 ```
 
 ## Review order
 
-1. Open the [AI-AI live proof](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html).
-2. Inspect the [proof manifest](https://github.com/o-yutaka/AI-AI/blob/main/docs/assets/proof/visual-proof-manifest.json).
-3. Open [AI-AI](https://github.com/o-yutaka/AI-AI) for implementation, tests, locks, Docker, and claim boundaries.
-4. Open [BLACK](https://github.com/o-yutaka/BLACK) for the larger decision-platform architecture.
-5. Open [black-pokemon-championship](https://github.com/o-yutaka/black-pokemon-championship) for strict runtime and evaluation engineering.
+### Fastest 5-minute review
+
+1. [AI-AI live proof](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html)
+2. [AI-AI repository](https://github.com/o-yutaka/AI-AI)
+3. [BLACK repository](https://github.com/o-yutaka/BLACK)
+
+### Deep technical review
+
+4. [popopo](https://github.com/o-yutaka/popopo)
+5. [BLACK Pokémon Championship](https://github.com/o-yutaka/black-pokemon-championship)
+6. [black-core](https://github.com/o-yutaka/black-core)
+7. [openclaw-bot-review](https://github.com/o-yutaka/openclaw-bot-review)
+
+## Portfolio standard
+
+Every featured repository is expected to expose the same evidence chain:
+
+```text
+Problem
+  ↓
+Architecture
+  ↓
+Working implementation
+  ↓
+Tests / CI
+  ↓
+Failure handling
+  ↓
+Reproducible evidence
+  ↓
+Claim boundary
+  ↓
+Business transfer
+```
+
+The goal is not to show many repositories. The goal is for **every featured repository to survive technical review on its own**.
