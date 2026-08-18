@@ -1,1 +1,0 @@
-Kaggriculture workspace. Submission credentials are managed outside this repository; do not commit Kaggle API keys here.
