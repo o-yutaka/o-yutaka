@@ -1,174 +1,224 @@
-# o-yutaka — AI Agent / Automation / Platform Engineer
+# o-yutaka
 
-I build the engineering layer around AI models: **agent runtimes, business automation, permissioned tool use, provider routing, human approval, evaluation, external API integration, reproducible execution, and terminal-first operations**.
+## 個人でAIを触り始めた夢物語
 
-> A useful AI system must show what it decided, why it decided it, what it was allowed to do, whether it executed, and how the result can be reproduced.
+最初は、ただAIで何ができるのかを試していただけだった。
 
-## Portfolio architecture
+モデルを触って、プロンプトを書いて、AI同士をつないで、思いついた仕組みを一つずつ実装した。
+そのうち「AIそのものを作る」よりも、**AIをどう判断させ、どう組み合わせ、どう安全に実行させ、どう検証するか**の方に興味が移っていった。
 
-These repositories are presented as one engineering system, not as unrelated demos.
+このGitHubは、その夢物語をコードにしていった記録です。
+
+今は、AIモデルの上にある **Decision / Agent / Execution / Verification のレイヤー**を作っています。
+
+> AIを置き換えるのではなく、AIをどう使うかを設計する。
+
+## 今つくっているもの
 
 ```text
                          BLACK
-                Decision / Trust Platform
+                Decision / Trust OS
                            │
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-     AI-AI              popopo            Pokémon
- Business Agent       AI Product        Planning / Eval
- Control Plane        + API Policy       + Simulation
-        │                  │                  │
-        └──────────────┬───┴──────────────────┘
-                       │
-                 black-core
-               Python Agent Runtime
-                       │
-              Agent Operations
-             openclaw-bot-review*
+          ┌────────────────┼────────────────┐
+          │                │                │
+        AI-AI           KAIROS          BLACK Pokémon
+   Agent Control      Business OS       Planning / Eval
+          │                │                │
+          └────────────────┼────────────────┘
+                           │
+                      black-core
+                 Python Agent Runtime
+                           │
+                Competition / Research
+                     HROS / Lab
 ```
 
-`*` Fork/adaptation lineage is disclosed in that repository and is not presented as an original upstream project.
+これらは別々の思いつきではなく、同じ問いを違う場所で実装したものです。
 
-## Featured portfolio — every entry has a job
+**「AIをどう制御し、現実の実行につなげるか」**
 
-| Project | What it proves | Best-fit roles |
-|---|---|---|
-| **[BLACK](https://github.com/o-yutaka/BLACK)** | Decision platform, LLM/provider routing, plugins, evidence, replay, CLI, web operations | AI Platform / Agent / LLM / TypeScript |
-| **[AI-AI](https://github.com/o-yutaka/AI-AI)** | Business AI Agent control plane, FastAPI, Next.js, approval, tool boundaries, idempotency, audit | AI Automation / Python / FastAPI / Agent |
-| **[popopo](https://github.com/o-yutaka/popopo)** | AI product integration, FastAPI, OAuth2, external APIs, policy, privacy, live evidence | AI Product / API Integration / Full-stack |
-| **[BLACK Pokémon Championship](https://github.com/o-yutaka/black-pokemon-championship)** | Stateful planning, strict external action contracts, simulation, fallback, evaluation, reproducible artifacts | Agent Planning / Evaluation / Reliability |
-| **[black-core](https://github.com/o-yutaka/black-core)** | Python-first runtime, event bus, agent loop, executor, memory, controlled code execution | Python / Agent Runtime |
-| **[openclaw-bot-review](https://github.com/o-yutaka/openclaw-bot-review)** | Agent operations dashboard, sessions, models, tokens, health, skills, channels | Agent Operations / Next.js / TypeScript |
+## Featured Projects
 
-## 1. BLACK — Decision & Trust Operating System
+### 1. BLACK — Decision & Trust Operating System
+
+[BLACK](https://github.com/o-yutaka/BLACK)
+
+AIモデルの上位にある意思決定・検証・実行レイヤー。
 
 ```text
-Mission → Context → Candidate Arena → Evaluation → Capability Router
-        → Plugin Runtime → Evidence → Verification → Decision Ledger → Replay
+Mission
+  ↓
+Context
+  ↓
+Candidate Arena
+  ↓
+Evaluation
+  ↓
+Capability Router
+  ↓
+Plugin Runtime
+  ↓
+Evidence
+  ↓
+Verification
+  ↓
+Decision Ledger
+  ↓
+Replay
 ```
 
-Evidence includes provider routing, plugin/provider SDKs, deterministic Decision DNA, replay verification, SQLite + JSONL ledgering, secret redaction, CLI, Next.js operations UI, 140+ unit/integration tests, 53 Playwright E2E checks, Storybook, and CI verification.
+LLM / Provider routing、Plugin、Evidence、Verification、Decision Ledger、Replay、CLI、Web UI、SQLite、CI、E2Eまでを一つの実行系として構築しています。
 
-**Recruiter path:** `README.md` → `ARCHITECTURE.md` → `packages/runtime` → `packages/core` → `docs/evidence/`.
+**このプロジェクトが今の中心です。**
 
-## 2. AI-AI — Business AI Agent Control Plane
+### 2. AI-AI — AI Agent Control Plane
 
-A runnable full-stack reference for contract-aware, auditable, human-approved AI agents.
+[AI-AI](https://github.com/o-yutaka/AI-AI)
+
+企業向けAI Agentを、自由に動かすのではなく、**契約・権限・証拠・人間承認の中で安全に実行するControl Plane**。
 
 ```text
-OpenAI-compatible planner
-        ↓
-Contract / Permission / Evidence / Privacy gates
-        ↓
-Deterministic ranking
-        ↓
-Human approval when required
-        ↓
-Fixed tool adapter
-        ↓
-Audit / SQLite / Idempotent replay
+LLM
+ ↓
+Candidate
+ ↓
+Contract / Permission / Evidence
+ ↓
+Ranking
+ ↓
+Human Approval
+ ↓
+Tool Execution
+ ↓
+Audit / Replay
 ```
 
-Verified browser proof covers duplicate prevention, conflict rejection, blocked actions, approval gating, desktop/mobile evidence, FastAPI, Next.js, Docker, and CI.
+FastAPI、Next.js、Docker、SQLite、Idempotency、Privacy Gate、Tool Allow-list、Browser proofまで実装しています。
 
 **Live proof:** https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html
 
-## 3. popopo — Production-oriented AI Product Integration
+### 3. KAIROS — Autonomous Business OS
 
-A working AI product prototype demonstrating:
+[KAIROS](https://github.com/o-yutaka/KAIROS)
 
-- FastAPI + strict Pydantic contracts
-- OAuth2 client credentials
-- External API adapters
-- Consent / crisis / privacy / cooldown policy
-- Allowlisted retrieval
-- Deterministic credential-free fallback
-- Redacted live API evidence
-- Automated API/media/submission tests
-- GitHub Actions + Docker
-
-The transferable pattern is:
+AIの判断を、実際の仕事・案件・収益へつなげるためのBusiness OS構想。
 
 ```text
-Event → Policy → Model → Allowlist → External API → Delivery Policy → Evidence
+WORLD
+ ↓
+RECON / INTELLIGENCE
+ ↓
+SIGNAL
+ ↓
+OPPORTUNITY
+ ↓
+BLACK DECISION
+ ↓
+EXECUTION
+ ↓
+REVENUE
+ ↓
+FEEDBACK
+ ↓
+WORLD
 ```
 
-**Public demo:** https://o-yutaka.github.io/popopo/
+Multi-LLM、Web intelligence、Opportunity generation、GitHub Issue → AI → PR → Deploy、Autonomous loopなどを組み合わせています。
 
-## 4. BLACK Pokémon Championship — Stateful Agent Reliability
+### 4. BLACK Pokémon Championship — Stateful Agent Reliability
 
-A stateful agent connected to a strict external simulation engine.
+[BLACK Pokémon Championship](https://github.com/o-yutaka/black-pokemon-championship)
 
-It proves:
-
-- execute only currently exposed actions
-- preserve option-index semantics
-- reject invalid selections before execution
-- deterministic fallback under timeout/error
-- exact submission artifact verification
-- regression/crash/speed screening
-- honest separation of local screening and official evaluation
-
-This is the planning/evaluation proof behind the business-agent work rather than a claim that the domain heuristic is universal.
-
-## 5. black-core — Python Agent Runtime
-
-Python-first runtime covering Event Bus, Task Intelligence, Goal Generation, Agent System, Executor/Code Runner, Autonomous Loop, and FAISS semantic memory.
-
-The repository is being hardened toward the same portfolio gates used by the other projects: typed contracts, deterministic tests, CI, dependency locking, benchmarks, and explicit execution-policy verification.
-
-## 6. openclaw-bot-review — Agent Operations
-
-A dashboard-oriented engineering study around agent operations: model management, sessions, token usage, gateway health, skills, channels, alerts, and scheduling.
-
-**Lineage is disclosed in the repository.** It is shown as architecture/operations experience, not as an original upstream implementation claim.
-
-## Skill matrix
+ゲームAIとして作ったものですが、実際に検証したかったのは **外部エンジンに接続されたAgentをどう安全に動かすか** です。
 
 ```text
-AI Agent Runtime       LLM / Provider Routing      AI Automation
-Python / FastAPI       TypeScript / Next.js        Pydantic / Zod
-Tool Calling           Human-in-the-loop           Audit / Decision Trace
-Evaluation Harness     Simulation / Planning       External API Contracts
-OAuth2 / Policy        Docker / CI                 SQLite / Ledgers
-Failure Recovery       Privacy Boundaries           Terminal-first Operations
+External Observation
+ ↓
+Policy
+ ↓
+Legal Action Validation
+ ↓
+Execute
+ ↓
+Fallback on Error
+ ↓
+Audit / Artifact
 ```
 
-## Review order
+Action contract、invalid output rejection、timeout、deterministic fallback、artifact verification、multi-process simulation、honest evaluation boundaryを実装しています。
 
-### Fastest 5-minute review
+### 5. black-core / HROS — Agent Runtime & Research
 
-1. [AI-AI live proof](https://raw.githack.com/o-yutaka/AI-AI/main/docs/live-demo.html)
-2. [AI-AI repository](https://github.com/o-yutaka/AI-AI)
-3. [BLACK repository](https://github.com/o-yutaka/BLACK)
+[black-core](https://github.com/o-yutaka/black-core)  
+[HROS](https://github.com/o-yutaka/HORS)
 
-### Deep technical review
+Python-first Agent Runtime、Event Bus、Task / Goal Intelligence、Executor、Memory、Autonomous Loop。
 
-4. [popopo](https://github.com/o-yutaka/popopo)
-5. [BLACK Pokémon Championship](https://github.com/o-yutaka/black-pokemon-championship)
-6. [black-core](https://github.com/o-yutaka/black-core)
-7. [openclaw-bot-review](https://github.com/o-yutaka/openclaw-bot-review)
+その上で、HROSでは `bible / adr / rfc / prompts / core / kernel / capability / service / infrastructure / workspace / experiments / logs` まで含めて、**AIシステムそのものを研究・運用するための土台**を作っています。
 
-## Portfolio standard
-
-Every featured repository is expected to expose the same evidence chain:
+## いま興味がある領域
 
 ```text
-Problem
-  ↓
-Architecture
-  ↓
-Working implementation
-  ↓
-Tests / CI
-  ↓
-Failure handling
-  ↓
-Reproducible evidence
-  ↓
-Claim boundary
-  ↓
-Business transfer
+AI Agent Runtime
+LLM / Provider Routing
+Prompt Engineering
+AI Orchestration
+Tool Calling / MCP
+Human-in-the-loop
+Decision Systems
+Evaluation / Simulation
+Failure Recovery
+Evidence / Audit / Replay
+Business Automation
+AI + External APIs
 ```
 
-The goal is not to show many repositories. The goal is for **every featured repository to survive technical review on its own**.
+## 考えていること
+
+AIは、モデル単体では完成しない。
+
+どのモデルを使うか。
+どこまでAIに任せるか。
+何を証拠とするか。
+どの操作を許可するか。
+失敗したらどう戻すか。
+同じ判断をもう一度再現できるか。
+
+そういう**モデルの外側**を作ることに興味があります。
+
+> Models change.
+> Providers change.
+> Prompts change.
+> Good systems should remain explainable.
+
+## このGitHubについて
+
+このアカウントには、完成した製品だけではなく、途中の実験や失敗も含まれています。
+
+最初の「AIで何かできるかもしれない」という夢物語から、
+
+```text
+AIを触る
+ ↓
+AIを組み合わせる
+ ↓
+Agentにする
+ ↓
+Decisionを持たせる
+ ↓
+Executionを制御する
+ ↓
+Verificationする
+ ↓
+Evidenceを残す
+ ↓
+Replayする
+ ↓
+Business / Competition / Researchへ広げる
+```
+
+という形に変わってきました。
+
+**まだ途中です。**
+
+このGitHubは、その途中をそのまま公開しています。
